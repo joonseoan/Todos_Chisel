@@ -3,6 +3,24 @@ import _ from 'lodash';
 
 class UserId extends Component {
 
+	state = {
+
+		userIdNumbers: []
+	}
+
+	static getDerivedStateFromProps(nextProps, prevState) {
+        
+        if(prevState.userIdNumbers.length < nextProps.controlData.userIdNumbers.length) {
+
+            return {
+                userIdNumbers: nextProps.controlData.userIdNumbers
+            };
+
+        }
+        return null;
+   
+    }
+
 	handleClick = e => {
 
 		const {setUserId} = this.props.controlData;
@@ -10,29 +28,13 @@ class UserId extends Component {
 
 	}
 
-	shouldComponentUpdate(nextProps, nextState){
-
-		const { userIdNumbers, userId, slide, setSlide } = this.props.controlData;
-
-		if(this.props.controlData.userId && 
-			this.props.controlData.userId !== nextProps.controlData.userId) {
-
-			const findUserId = _.filter( userIdNumbers, userIdNumber => 
-				userIdNumber === nextProps.controlData.userId);
-			
-
-			if(findUserId === 0) return false;
-		}
-
-		return true;
-
-	}
-
 	render() {
 
-		const { userIdNumbers, userId, setUserId, slide, setSlide } = this.props.controlData;
+		const { userIdNumbers } = this.state;
 
 		if(userIdNumbers.length === 0) return <div />;
+
+		const { userId, setUserId, slide, setSlide } = this.props.controlData;
 		
 		const lastSlide = Math.ceil(userIdNumbers.length / 3);
 		
@@ -60,8 +62,11 @@ class UserId extends Component {
 					</li>
 
 					{_.map(userIdNumbers, number => {
-						if( number >= (slide * 3 - 2)  && number <= slide * 3) {
+
+						if(userIdNumbers.indexOf(number) + 1 >= (slide * 3 - 2) &&
+						 userIdNumbers.indexOf(number) + 1 <= slide * 3) {
 							return <li key={number} >
+						
 								<button className={`btn btn-sm d-inline mr-2 
 									btn-${Number(userId) === number ? 'warning' : 'success'} 
 									`}

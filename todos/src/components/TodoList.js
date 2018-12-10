@@ -6,37 +6,63 @@ import UserId from './UserId';
 import FilterUserId from './FilterUserId';
 import FilterCompleted from './FilterCompleted';
 import SortUserId from './SortUserId';
-import AddTodos from './mutateTodos/addTodos'
+import AddTodos from './mutateTodos/addTodos';
+import EditTodos from './mutateTodos/editTodos';
 
 class TodoList extends Component {
 
 	state = {
 
+		todos: [],
 		userId: '',
 		slide : 1,
 		completedStatus : '',
-		sortValue: '',
-		newTodo: null
+		sortValue: ''
 
 	}
 
 	itemNumber = 0;
 
+	static getDerivedStateFromProps(nextProps, prevState) {
+        
+        if(prevState.todos.length < nextProps.todos.length) {
+
+            return {
+                todos: nextProps.todos
+            };
+
+        }
+        return null;
+   
+    }
+
+	componentDidUpdate(prevProps, prevState) {
+
+		if(prevProps.postTodo !== this.props.postTodo) {
+
+			const newTodos = _.concat(prevState.todos, this.props.postTodo);
+			this.setState({ todos: newTodos });
+			this.itemNumber = 0;
+	
+		}
+		
+	}
+
 	render() {
 
-		const { todos } = this.props;
+		const { todos } = this.state;
 
-		if(todos.length === 0) return <div />
+		if(todos.length === 0) return <div />;
 
-		const ascendingTodos = this.props.todos
+		const ascendingTodos = todos
 			.sort((first, second) => first.userId - second.userId)
 			.sort((first, second) => first.id - second.id);
-
-		console.log(ascendingTodos);
 
 		let newTodoList = [];
 
 		const userIds = _.uniqBy(_.map(ascendingTodos, todo => todo.userId));
+
+		console.log(userIds)
 
 		const controlData = {
 
@@ -66,10 +92,6 @@ class TodoList extends Component {
 		} else if (this.state.completedStatus === 'incompleted') {
 			newTodoList = inCompletedList;
 		}
-
-		// if(newTodoList.length === 0) {
-		// 	newTodoList = ascendingTodos;
-		// }
 
 		if(this.state.sortValue === 'a_title') {
 			newTodoList = newTodoList.sort((first, second) => first.title !== second.title ? first.title < second.title ? -1 : 1 : 0);
@@ -110,12 +132,9 @@ class TodoList extends Component {
 							}
 						}} 
 					/>
-					<AddTodos maxNumber={ascendingTodos[ascendingTodos.length - 1].id}
-							  setNewTodo={(newTodo) => {
-							  	ascendingTodos = [ ...ascendingTodos, newTodo ]
-							  	this.setState({newTodo});
-							  }}
-					/>
+					<AddTodos maxNumber={ascendingTodos[ascendingTodos.length - 1].id} />
+
+					<EditTodos />
 				
 				</div>
 			
@@ -170,9 +189,9 @@ class TodoList extends Component {
 	}
 }
 
-function mapStateToProps({todos}) {
+function mapStateToProps({todos, postTodo}) {
 
-	return { todos }
+	return { todos, postTodo }
 }
 
 export default connect(mapStateToProps)(TodoList);

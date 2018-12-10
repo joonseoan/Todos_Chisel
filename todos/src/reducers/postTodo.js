@@ -6,7 +6,6 @@ export default function (state = null, action) {
 
         case POST_TODO:
         	
-        	console.log(action.payload)
             return action.payload;
         
         default:

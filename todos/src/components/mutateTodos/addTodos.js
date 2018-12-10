@@ -10,22 +10,50 @@ class AddTodos extends Component {
 
 		title: '',
 		userId: '',
-		completed: false
-
-	}
-
-	componentDidUpdate(prevProps, prevState){
-
-		if(this.props.postTodo.id !== prevProps.postTodo.id) {
-			this.props.setNewTodo(this.props.postTodo);
-		}
+		completed: '',
+		error : true,
+		message: ''
 
 	}
 
 	handleOnChange = e => {
 
 		const name = e.target.name;
-		const value = e.target.value.trim();
+		const value = e.target.value;
+		
+		if(name === 'userId') {
+
+			if(value && (!Number(value))) {
+
+				this.setState({ 
+					error: true,
+					message: 'Must be a number.'
+				});
+
+			} else if(Number(value) < 0) {
+
+				this.setState({ 
+					error: true,
+					message: 'Must be greater than 0.'
+				});
+
+			} else if(value.indexOf('.') !== (-1)) {
+
+				this.setState({ 
+					error: true,
+					message: 'Must be an integer.'
+				});
+
+			} else {
+
+				this.setState({ 
+					error: false,
+					message: ''
+				});
+			}
+			
+		}
+
 		this.setState({
 			[name] : value
 		});
@@ -37,28 +65,38 @@ class AddTodos extends Component {
 		const { maxNumber } = this.props;
 
 		const newState ={ 
-			title: this.state.title,
+			title: this.state.title.trim(),
 			userId: Number(this.state.userId),
 			id : maxNumber + 1,
-			completed: this.state.completed
+			completed: this.state.completed === 'completed' ? true : false
 		}
 
 		this.props.postTodo(newState);
 
-		e.preventDefault() 
-
 		this.setState({
 			title:'',
 			userId:'',
-			completed: false
+			completed: 'incompleted'
 		})
 
+		e.preventDefault() 
 	}
 
 	render() {
 
-		console.log(this.state.title, this.state.userId, this.state.completed)
+		const {completed} = this.state;
+
+		const display = this.state.error ? 'none' 
+			: !this.state.title || !this.state.userId || !this.state.completed 
+			? 'none' : 'block';
+
+		const incompleteMessage = !this.state.title || !this.state.userId || !this.state.completed 
+			? (<label className='text-warning'> PLEASE FILL BLANKS </label>) 
+			: this.state.error ? (<label className='text-danger'>STILL ERROR</label>)
+			: (<label className='mr-2'>DONE!<i className="fa fa-check ml-2"></i></label>);
+		
 		return <div className='card'>
+
 			<form onSubmit={this.handleSubmit}>
 				<div>
 					<label>
@@ -68,8 +106,10 @@ class AddTodos extends Component {
 							onChange={this.handleOnChange} 
 							value={this.state.userId}
 							ref={this.input}
+							required = {true}
 						/>
 					</label>
+					<label className="text-danger blink text-center d-block">{this.state.message}</label>
 				</div>
 				<div>
 					<label>
@@ -92,31 +132,39 @@ class AddTodos extends Component {
 						COMPLETED:
 						<input type='radio' 
 							name='completed'
+							value= 'completed'
 							onChange={this.handleOnChange}
-							value={true} 
+							checked = {completed === 'completed'}
+							
 						/>
 					</label>
 					<label>
 						IN-PROGRESS:
 						<input type='radio' 
 							name='completed'
+							value= 'incompleted'
 							onChange={this.handleOnChange}
-							value={false} 
+							checked = {completed === 'incompleted'}
 						/>
 					</label>
 				
 				</div>
-				<button className='btn btn-sm btn-danger' type='submit'>
-					SUBMIT
-				</button>	
+				<div className='text-center text-secondary mx-auto'>
+
+					{incompleteMessage}
+
+					<button
+						className='btn btn-sm btn-danger mx-auto' 
+						type='submit'
+						style={{display: display}}
+					>
+						SUBMIT
+					</button>
+				</div>	
 			</form>
 
 		</div>
 	}
-}
-
-function mapStateToProps({ postTodo }) {
-	return {postTodo};
 }
 
 export default connect(null, actions)(AddTodos);

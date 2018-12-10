@@ -8,16 +8,18 @@ class FilterUserId extends Component {
 	componentDidUpdate(prevProps, prevState) {
 
 		const { userIdNumbers, userId, setSlide } = this.props.controlData;
-		
+
 		if(prevProps.controlData.userId !== userId) {
 
 			const findUserId = _.filter(userIdNumbers, userIdNumber => userIdNumber === Number(userId));
+
+			// console.log('findUserID', findUserId)
 
 			this.setState({userIdLength : findUserId.length })
 
 			if(findUserId.length > 0) {
 
-				const slideNumber = Math.ceil(userId / 3);
+				const slideNumber = Math.ceil((userIdNumbers.indexOf(findUserId[0]) + 1) / 3);
 				setSlide(slideNumber);
 			
 			}
@@ -25,7 +27,6 @@ class FilterUserId extends Component {
 		}
 
 	}
-
 
 	handleOnChange = e => {
 		const { setUserId } = this.props.controlData;

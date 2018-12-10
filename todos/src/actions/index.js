@@ -19,3 +19,15 @@ export const postTodo = (todo) => async dispatch => {
     dispatch({ type: POST_TODO, payload: res.data });
 
 };
+
+export const editTodo = (todo, id) => async dispatch => {
+
+	// console.log(id)
+
+    const res = await axios.put(`${url}/${id}`, todo);
+
+    console.log(res.data);
+
+    dispatch({ type: POST_TODO, payload: res.data });
+
+};
