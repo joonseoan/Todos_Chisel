@@ -4,7 +4,6 @@ import * as actions from '../actions';
 import _ from 'lodash';
 
 import TodoList from './TodoList'
-// import FilterUserId from './FilterUserId';
 
 class App extends Component {
 
@@ -15,6 +14,10 @@ class App extends Component {
   }
 
   render() {
+
+    if(this.props.todos.length === 0) return <div />
+
+      console.log('postTodo: ', this.props.postTodo);
   
     return (
 
@@ -23,7 +26,10 @@ class App extends Component {
 
 	    		<div className='item-hl'>
 		    		
-	        		<TodoList />
+	        		<TodoList 
+                todos={ this.props.todos }
+                postTodo={ this.props.postTodo }
+              />
 		    	
 		    	</div>	
 	    	
@@ -35,5 +41,10 @@ class App extends Component {
   }
 
 }
- 
-export default connect(null, actions)(App);
+
+function mapStateToProps({ todos }) {
+
+  return { todos }
+}
+
+export default connect(mapStateToProps, actions)(App);

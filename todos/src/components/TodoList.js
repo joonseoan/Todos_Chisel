@@ -26,18 +26,14 @@ class TodoList extends Component {
 
 	itemNumber = 0;
 
-	static getDerivedStateFromProps(nextProps, prevState) {
-        
-        if(prevState.todos.length < nextProps.todos.length) {
+	componentDidMount = () => {
 
-            return {
-                todos: nextProps.todos
-            };
+		const { todos } = this.props;
 
-        }
-        return null;
-   
-    }
+		this.setState({ todos });
+
+
+	}
 
 	componentDidUpdate(prevProps, prevState) {
 
@@ -54,6 +50,8 @@ class TodoList extends Component {
 	render() {
 
 		const { todos } = this.state;
+
+		if(this.props.todos.length === 0) return <div />
 
 		if(todos.length === 0) return <div />;
 
@@ -208,8 +206,15 @@ class TodoList extends Component {
 							closeModal: () => {
 								this.setState({ openModal: false });
 								this.itemNumber = 0;
-							}
+							},
+							removeTodo: (id) => {
 
+								console.log('iddddddd: ', id)
+								this.setState({
+									todo: _.filter(this.state.todo, todo => (todo.id !== id))
+								});
+								this.itemNumber = 0;
+							}
 						}}
 					/>
 
@@ -221,9 +226,11 @@ class TodoList extends Component {
 	}
 }
 
-function mapStateToProps({todos, postTodo}) {
+function mapStateToProps({ postTodo }) {
 
-	return { todos, postTodo }
+	return { postTodo }
 }
 
 export default connect(mapStateToProps)(TodoList);
+
+// export default TodoList;
