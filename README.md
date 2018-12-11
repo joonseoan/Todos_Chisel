@@ -88,4 +88,4 @@
 </html>
 
 ## APP Design
-### ![Main Page1](/client/public/images/git_readme/location.PNG)
+### ![Main Page1](./todos.PNG)
