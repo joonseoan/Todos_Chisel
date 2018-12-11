@@ -2,12 +2,21 @@
 ## Javascript Library : React.js
 ## CSS : Bootstrap v3 / v4
 ## Setup
+##### You can use this app by cloning or downloading zip file in this repository. 
+##### The following guide is mainly created for the users who do not use 'git clone'. 
 ### 1. Must install npm ( or yarn)
 ### 2. Make a root folder : ex) mkdir Chisel
 ### 3. At the root folder : ex) npm install -g create-ract-app
 ### 4. At the root folder : ex) create-react-app todos
-### 5. Copy the follwings
-<link rel="stylesheet" type="text/css" href="../style/style.css" />
+### 5. Copy the follwing code. It is required because to utilize bootstrap v3 and v4 at the same time.
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <link rel="stylesheet" type="text/css" href="../style/style.css" />
 
     <link
       rel="stylesheet"
@@ -68,33 +77,15 @@
     ></script>
   </body>
 </html>
+### 6. Paste the code above into your 'index.html' in 'public' folder in 'todos' created above.
+### 7. In your public folder, create 'style' folder: mkdir style
+### 8. Create 'style.css' file to be implemented for styling.
+### 9. Copy the code of style.css in this GitHub and paste it into 'style.css' file just created in your local PC
+### 10. Install the following packages
+##### command) npm install --save axios lodash react-bootstrap react-redux redux redux-thunk
+### 11. Copy delete 'src' folder in your PC and copy 'src' folder in this GitHub and paste it into your PC
+### 12. Run command (command) 'npm start' / 'npm run start' to start!
 
+## APP Design
+### ![Main Page1](/client/public/images/git_readme/location.PNG)
 
-
-- library and API : react-stripe, react-google-maps, react-slick, react-modal, moment
-###  - css control : react-bootstrap, wow.js
-## Back-end : Node.js (express and mocha)
-###  - library : stripe, mongoose, bcrypt
-## Database : MongoDB
-
-## Application Concept :
-#### Weather always impacts on customer's menu choice in a restaurant. As enclosing this real-time weather information and recommendation menu (Current Specials) based on the weather information, 
-#### the application helps customers intuitively choose and order their favorit foods in a bit.
-
-## App Structure :
-#### Restaurant Locations
-#### Real-Time Weather based on Locations
-#### Recommendation Menu based on Preset weather Information
-#### Menu Order with Detailed Food Information enclosing Customer's Reviews
-#### Guesbooks(containing Customer's Food Evaluation and Recommendation)
-#### Login & Guestbook Management (Delete Customer's post)
-
-#### 1. Restaurant Location and Weather Information
-####      - displaying local weather information 
-####      - updating weather information every 5 minutes 
-####      - and utilizing OpenWeatherMap and GoogleMap modules
-##### [Toronto Restaurant]
-##### ![Main Page1](/client/public/images/git_readme/location.PNG)
-##### [Vancouver Restaurant]
-##### ![Main_Page2](/client/public/images/git_readme/location2.PNG)
-#### 2. Recommendatiion Menus  
