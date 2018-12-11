@@ -8,8 +8,8 @@
 ### 2. Make a root folder : ex) mkdir Chisel
 ### 3. At the root folder : ex) npm install -g create-ract-app
 ### 4. At the root folder : ex) create-react-app todos
-### 5. Copy the follwing code. It is required because to utilize bootstrap v3 and v4 at the same time.
-### 6. Paste the code above into your 'index.html' in 'public' folder in 'todos' created above.
+### 5. Copy the code at the bottom of this Read.md file. It is required because to utilize bootstrap v3 and v4 at the same time.
+### 6. Paste the copied code into your 'index.html' in 'public' folder in 'todos' created above.
 ### 7. In your public folder, create 'style' folder: mkdir style
 ### 8. Create 'style.css' file to be implemented for styling.
 ### 9. Copy the code of style.css in this GitHub and paste it into 'style.css' file just created in your local PC
