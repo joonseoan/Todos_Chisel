@@ -18,9 +18,6 @@
 ### 11. Copy delete 'src' folder in your PC and copy 'src' folder in this GitHub and paste it into your PC
 ### 12. Run command (command) 'npm start' / 'npm run start' to start!
 
-## APP Design
-### ![Main Page1](/client/public/images/git_readme/location.PNG)
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -90,3 +87,5 @@
   </body>
 </html>
 
+## APP Design
+### ![Main Page1](/client/public/images/git_readme/location.PNG)
