@@ -44,6 +44,15 @@ class TodoList extends Component {
 			this.itemNumber = 0;
 	
 		}
+
+		if(prevProps.editTodo !== this.props.editTodo) {
+
+			const newTodos = _.filter(prevState.todos, todo=> todo.id !== this.props.editTodo.id);
+			this.setState({ todos: _.concat(newTodos, this.props.editTodo) });
+			this.itemNumber = 0;
+		}
+
+
 		
 	}
 
@@ -55,7 +64,7 @@ class TodoList extends Component {
 
 		if(todos.length === 0) return <div />;
 
-		console.log(this.state.postedTodo)
+		console.log('editTodo: ', this.props.editTodo)
 
 		const ascendingTodos = todos
 			.sort((first, second) => first.userId - second.userId)
@@ -170,13 +179,14 @@ class TodoList extends Component {
 								 className={`list-group-item bg-${this.itemNumber % 2 === 0 ? 'light' : ''}`}>
 								
 								<div onClick={ () => {
-									console.log('a: ', todo.id); 
+								
 									this.setState({ 
 
 										postedTodo: todo,
 										openModal: true
 
 									});
+
 									this.itemNumber = 0;
 								}}
 									
@@ -207,14 +217,14 @@ class TodoList extends Component {
 								this.setState({ openModal: false });
 								this.itemNumber = 0;
 							},
-							removeTodo: (id) => {
+							// removeTodo: (id) => {
 
-								console.log('iddddddd: ', id)
-								this.setState({
-									todo: _.filter(this.state.todo, todo => (todo.id !== id))
-								});
-								this.itemNumber = 0;
-							}
+							// 	console.log('iddddddd: ', id)
+							// 	this.setState({
+							// 		todo: _.filter(this.state.todo, todo => (todo.id !== id))
+							// 	});
+							// 	this.itemNumber = 0;
+							// }
 						}}
 					/>
 
@@ -226,11 +236,9 @@ class TodoList extends Component {
 	}
 }
 
-function mapStateToProps({ postTodo }) {
+function mapStateToProps({ postTodo, editTodo }) {
 
-	return { postTodo }
+	return { postTodo, editTodo }
 }
 
 export default connect(mapStateToProps)(TodoList);
-
-// export default TodoList;

@@ -4,8 +4,10 @@ import { combineReducers } from 'redux';
 
 import todos from './fetchTodos';
 import postTodo from './postTodo';
+import editTodo from './editTodo';
 
 export default combineReducers ({
     todos,
-    postTodo
+    postTodo,
+    editTodo
 });

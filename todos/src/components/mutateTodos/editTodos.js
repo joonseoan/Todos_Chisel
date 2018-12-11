@@ -12,7 +12,7 @@ class EditTodos extends Component {
 			completed: false,
 
 		}
-		// console.log(this.props)
+		
 		this.props.editTodo(data, 10);
 	}
 

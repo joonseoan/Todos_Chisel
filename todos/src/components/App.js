@@ -16,8 +16,6 @@ class App extends Component {
   render() {
 
     if(this.props.todos.length === 0) return <div />
-
-      console.log('postTodo: ', this.props.postTodo);
   
     return (
 
