@@ -8,7 +8,6 @@ import FilterCompleted from './FilterCompleted';
 import SortUserId from './SortUserId';
 import PostedTodo from './PostedTodo';
 import AddTodos from './mutateTodos/addTodos';
-import EditTodos from './mutateTodos/editTodos';
 
 class TodoList extends Component {
 
@@ -24,8 +23,10 @@ class TodoList extends Component {
 
 	}
 
+	// To setup and assign numbers to todo list
 	itemNumber = 0;
 
+	// assgin props data to state.todos
 	componentDidMount = () => {
 
 		const { todos } = this.props;
@@ -35,8 +36,10 @@ class TodoList extends Component {
 
 	}
 
+	// Update
 	componentDidUpdate(prevProps, prevState) {
 
+		// add a new todo to this.state.todos
 		if(prevProps.postTodo !== this.props.postTodo) {
 
 			const newTodos = _.concat(prevState.todos, this.props.postTodo);
@@ -45,6 +48,7 @@ class TodoList extends Component {
 	
 		}
 
+		// update an existing todo to this.state.todos
 		if(prevProps.editTodo !== this.props.editTodo) {
 
 			const newTodos = _.filter(prevState.todos, todo=> todo.id !== this.props.editTodo.id);
@@ -52,8 +56,6 @@ class TodoList extends Component {
 			this.itemNumber = 0;
 		}
 
-
-		
 	}
 
 	render() {
@@ -64,14 +66,18 @@ class TodoList extends Component {
 
 		if(todos.length === 0) return <div />;
 
-		console.log('editTodo: ', this.props.editTodo)
-
+		// Sorting the todo data in case 'id' / 'userId' 
+		//		propertie(s) of the elements are not sorted
 		const ascendingTodos = todos
 			.sort((first, second) => first.userId - second.userId)
 			.sort((first, second) => first.id - second.id);
 
+		// Asing a variable to receive the manipulated data
+		//	which are sorted or filtered data
 		let newTodoList = [];
 
+		// Filter unique userIds to build pagination buttons 
+		// 	which are based on userIds
 		const userIds = _.uniqBy(_.map(ascendingTodos, todo => todo.userId));
 
 		const controlData = {
@@ -90,19 +96,25 @@ class TodoList extends Component {
 
 		};
 
+
+		// filter data based on a userId
 		const filterUserId = _.filter(ascendingTodos, todo => todo.userId === Number(this.state.userId));
 
+		// in case the userIds are not availbe, it should get back to all data
 		newTodoList = filterUserId.length !== 0 ? filterUserId : ascendingTodos;
 
+		// In order to sort data based on 'completed' property down below
 		const completedList = _.filter(newTodoList, todo => todo.completed);
 		const inCompletedList = _.filter(newTodoList, todo => !todo.completed);
 
+		// Filter data based on 'completed'
 		if(this.state.completedStatus === 'completed') {
 			newTodoList = completedList;
 		} else if (this.state.completedStatus === 'incompleted') {
 			newTodoList = inCompletedList;
 		}
 
+		// Soring data
 		if(this.state.sortValue === 'a_title') {
 			newTodoList = newTodoList.sort((first, second) => first.title !== second.title ? first.title < second.title ? -1 : 1 : 0);
 		} else if(this.state.sortValue === 'd_title') {
@@ -115,37 +127,90 @@ class TodoList extends Component {
 			newTodoList = inCompletedList.concat(completedList);
 		}
 
+		// Used flex-box for the responsive UI
 		return(<div className='d-flex flex-wrap row-hl justify-content-center'>
 			
-			<div className='item-hl mr-5 sticky-top'>
+			<div className='item-hl mr-5'>
 
-				<div className='sticky-top'>
-		
-					<FilterUserId controlData={controlData} />
+				{/* Used Collapsible*/}
+				<div id="accordion">
+					<div className='card'>
+						<div className='card-header'>
+							<h5>
+	            				<a href="#collapse1" data-parent="#accordion" data-toggle="collapse">
+	              					FILTER USER ID
+	            				</a>
+	         				 </h5>
+						</div>
+						<div id="collapse1" className="collapse">
+							<div className='card-body'>
+								<FilterUserId controlData={controlData} />
+							</div>
+						</div>
+					</div>
 
-					<FilterCompleted 
-						filterControl={{
-							completedStatus: this.state.completedStatus,
-							filterCompleted: (filter) => { 
-								this.setState({completedStatus: filter});
-								this.itemNumber = 0;
-							}
-						}} 
-					/>
+					<div className='card'>
+						<div className='card-header'>
+							<h5>
+	            				<a href="#collapse2" data-parent="#accordion" data-toggle="collapse">
+	              					FILTER COMPLETED
+	            				</a>
+	         				 </h5>
+						</div>
+						<div id="collapse2" className="collapse">
+							<div className='card-body'>
 
-					<SortUserId 
-						sortControl={{
-							sortValue: this.state.sortValue,
-							sortList: (value) => { 
-								this.setState({sortValue: value});
-								this.itemNumber = 0;
-							}
-						}} 
-					/>
-					<AddTodos maxNumber={ascendingTodos[ascendingTodos.length - 1].id} />
+								<FilterCompleted 
+									filterControl={{
+										completedStatus: this.state.completedStatus,
+										filterCompleted: (filter) => { 
+											this.setState({completedStatus: filter});
+											this.itemNumber = 0;
+										}
+									}} 
+								/>
+							</div>
+						</div>
+					</div>
 
-					<EditTodos />
-				
+					<div className='card'>
+						<div className='card-header'>
+							<h5>
+	            				<a href="#collapse3" data-parent="#accordion" data-toggle="collapse">
+	              					SORT DATA
+	            				</a>
+	         				 </h5>
+						</div>
+						<div id="collapse3" className="collapse">
+							<div className='card-body'>
+								<SortUserId 
+									sortControl={{
+										sortValue: this.state.sortValue,
+										sortList: (value) => { 
+											this.setState({sortValue: value});
+											this.itemNumber = 0;
+										}
+									}} 
+								/>
+							</div>
+						</div>
+					</div>
+
+					<div className='card'>
+						<div className='card-header'>
+							<h5>
+	            				<a href="#collapse4" data-parent="#accordion" data-toggle="collapse">
+	              					ENTER NEW TODOs
+	            				</a>
+	         				 </h5>
+						</div>
+						<div id="collapse4" className="collapse">
+							<div className='card-body'>
+								<AddTodos maxNumber={ascendingTodos[ascendingTodos.length - 1].id} />
+							</div>
+						</div>
+					</div>
+
 				</div>
 			
 			</div>
@@ -173,6 +238,7 @@ class TodoList extends Component {
 				<div>
 
 					<ul className="list-group list-group-flush">
+					{/* Render All todos or manipulated todos*/}
 						{_.map(newTodoList, todo => {
 							
 							return <li key={todo.id}  
@@ -206,7 +272,7 @@ class TodoList extends Component {
 						})}
 					</ul>
 				<div>
-
+					{/* Display Sinngle todo by using Modal*/}
 					<PostedTodo 
 
 						modalControl= {{
@@ -216,15 +282,7 @@ class TodoList extends Component {
 							closeModal: () => {
 								this.setState({ openModal: false });
 								this.itemNumber = 0;
-							},
-							// removeTodo: (id) => {
-
-							// 	console.log('iddddddd: ', id)
-							// 	this.setState({
-							// 		todo: _.filter(this.state.todo, todo => (todo.id !== id))
-							// 	});
-							// 	this.itemNumber = 0;
-							// }
+							}
 						}}
 					/>
 
@@ -236,6 +294,7 @@ class TodoList extends Component {
 	}
 }
 
+// Get a new / updated todo by using Redux
 function mapStateToProps({ postTodo, editTodo }) {
 
 	return { postTodo, editTodo }

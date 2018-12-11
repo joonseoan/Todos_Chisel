@@ -1,3 +1,4 @@
+// GET Reducer
 
 import { FETCH_TODOS } from '../actions/types';
 

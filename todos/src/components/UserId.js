@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import _ from 'lodash';
 
+// Built Pagination Buttons
 class UserId extends Component {
 
 	state = {
@@ -8,6 +9,7 @@ class UserId extends Component {
 		userIdNumbers: []
 	}
 
+	// Directly store props.userIdNumbers data into state above
 	static getDerivedStateFromProps(nextProps, prevState) {
         
         if(prevState.userIdNumbers.length < nextProps.controlData.userIdNumbers.length) {
@@ -34,10 +36,12 @@ class UserId extends Component {
 
 		if(userIdNumbers.length === 0) return <div />;
 
+		// Props object and properties from TodoList
 		const { userId, setUserId, slide, setSlide } = this.props.controlData;
 		
 		const lastSlide = Math.ceil(userIdNumbers.length / 3);
 		
+		// Button Display Control
 		const prevDisplay = slide === 1 ? 'hidden' : 'visible';
 		const nextDisplay = slide === lastSlide ? 'hidden' : 'visible';
 		const allUserIdDisplay = !userId ? 'hidden' : 'visible';
@@ -53,6 +57,8 @@ class UserId extends Component {
 					<li className='d-inline'>
 						<div className='d-inline btn btn-sm btn-outline-primary mr-2' type='button'
 							style={{ visibility : prevDisplay}}
+
+							// Control a number of Slide (PREV Button)
 							onClick={ () => { setSlide(slide - 1) }}
 						>
 							<i className="fa fa-chevron-circle-left"
@@ -60,8 +66,13 @@ class UserId extends Component {
 							></i>
 						</div>
 					</li>
-
+					{/* Display Pagination Button*/}
 					{_.map(userIdNumbers, number => {
+
+						{/* Control Pagination slide which consists of 3 button 
+							It is managed by indexOf methods to automatically control
+							additional userIds in the future
+						*/}
 
 						if(userIdNumbers.indexOf(number) + 1 >= (slide * 3 - 2) &&
 						 userIdNumbers.indexOf(number) + 1 <= slide * 3) {
@@ -84,6 +95,8 @@ class UserId extends Component {
 					<li className='d-inline'>
 						<div className='d-inline btn btn-sm btn-outline-primary mr-3' type='button'
 							style={{ visibility : nextDisplay}}
+
+							// Control a number of Slide (NEXT Button)
 							onClick={ () => { setSlide(slide + 1) } }
 						>
 							<i className="fa fa-chevron-circle-right align-middle"
@@ -91,7 +104,7 @@ class UserId extends Component {
 							></i>
 						</div>
 					</li>
-
+					{/* To get gack to all userIds*/}
 					<li>
 						<button 
 							className='btn btn-sm btn-primary'

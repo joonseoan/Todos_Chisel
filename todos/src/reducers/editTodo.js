@@ -1,3 +1,5 @@
+// UPDATE Reducer
+
 import { EDIT_TODO } from '../actions/types';
 
 export default function (state = null, action) {

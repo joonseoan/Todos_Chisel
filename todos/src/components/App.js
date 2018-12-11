@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
-import _ from 'lodash';
 
 import TodoList from './TodoList'
 
@@ -9,6 +8,7 @@ class App extends Component {
 
   componentDidMount () {
 
+    // fetch Todos from API server
   	this.props.fetchTodos()
 
   }
@@ -23,8 +23,10 @@ class App extends Component {
 	    	<div className="container jumbotron">
 
 	    		<div className='item-hl'>
-		    		
-	        		<TodoList 
+
+		    		{/* send todo data to TodoList*/}
+	        
+          		<TodoList 
                 todos={ this.props.todos }
                 postTodo={ this.props.postTodo }
               />
@@ -40,6 +42,7 @@ class App extends Component {
 
 }
 
+// get Todo Data
 function mapStateToProps({ todos }) {
 
   return { todos }

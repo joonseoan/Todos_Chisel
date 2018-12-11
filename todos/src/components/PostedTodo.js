@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
 import { Modal } from 'react-bootstrap';
-import EditInput from './EditInput';
+import EditTodos from './mutateTodos/editTodos';
 
+
+// To Display Modal based a single Todo
 class PostedTodo extends Component {
 
+	// to switch to Update Input on Modal
 	state = { edit : false }
 
+	// To minimize rendering. To receive modalControl props object just once.
 	shouldComponentUpdate(nextProps, nextState) {
 
 		const { postedTodo, openModal } = this.props.modalControl;
@@ -30,13 +33,9 @@ class PostedTodo extends Component {
 
 	render() {
 
-		console.log(this.state.edit)
-
 		const { postedTodo, openModal, closeModal, removeTodo } = this.props.modalControl;
 
 		if (!postedTodo) return <div />;
-
-		console.log(postedTodo.id)
 
 		return <div>
 
@@ -55,7 +54,7 @@ class PostedTodo extends Component {
 						>
 							TODO-ID: { postedTodo.id }
 						</div>
-
+						{/* When this.state.edit is true, it changes the modal content into update input*/}
 						{ !this.state.edit
 						  ? (<div>
 							  	<div className='mt-2'>
@@ -73,7 +72,7 @@ class PostedTodo extends Component {
 									</p>
 								</div>
 							</div>)
-						   : (<EditInput 
+						   : (<EditTodos
 						   		postedTodo= { postedTodo } 
 						   		closeModal={ closeModal }
 						   		removeTodo={ removeTodo }
@@ -84,15 +83,26 @@ class PostedTodo extends Component {
 				</Modal.Body>
 				<Modal.Footer>
 					<div className='mx-auto'>
-						<div className='btn btn-sm btn-secondary'
+						<div className='btn btn-sm btn-secondary d-inline'
 							onClick={() => { 
 								closeModal();
 								this.setState({ edit: false });
 							}}
 						>BACK</div>
-						<div className='btn btn-sm btn-warning'
+						<div className='btn btn-sm btn-warning d-inline'
 							onClick={() => { this.setState({ edit: true });}}
-						>EDIT</div>	
+							style = {{ visibility : `${ this.state.edit ? 'hidden': 'visible' }`}}
+						>EDIT</div>
+
+						{ this.state.edit ? (
+
+							<div className='btn btn-sm btn-success d-inline'
+								onClick={() => { this.setState({ edit: false });}}
+							>CANCEL</div>
+
+							) : null 
+						}
+
 					</div>
 				</Modal.Footer>
 			</Modal>
@@ -101,4 +111,4 @@ class PostedTodo extends Component {
 	}
 }
 
-export default PostedTodo;
+export default PostedTodo;	
