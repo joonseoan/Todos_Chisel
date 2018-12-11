@@ -6,6 +6,7 @@ import UserId from './UserId';
 import FilterUserId from './FilterUserId';
 import FilterCompleted from './FilterCompleted';
 import SortUserId from './SortUserId';
+import PostedTodo from './PostedTodo';
 import AddTodos from './mutateTodos/addTodos';
 import EditTodos from './mutateTodos/editTodos';
 
@@ -17,7 +18,9 @@ class TodoList extends Component {
 		userId: '',
 		slide : 1,
 		completedStatus : '',
-		sortValue: ''
+		sortValue: '',
+		postedTodo: null,
+		openModal: false
 
 	}
 
@@ -54,6 +57,8 @@ class TodoList extends Component {
 
 		if(todos.length === 0) return <div />;
 
+		console.log(this.state.postedTodo)
+
 		const ascendingTodos = todos
 			.sort((first, second) => first.userId - second.userId)
 			.sort((first, second) => first.id - second.id);
@@ -61,8 +66,6 @@ class TodoList extends Component {
 		let newTodoList = [];
 
 		const userIds = _.uniqBy(_.map(ascendingTodos, todo => todo.userId));
-
-		console.log(userIds)
 
 		const controlData = {
 
@@ -159,31 +162,60 @@ class TodoList extends Component {
 					</div>
 
 				</div>
-				{_.map(newTodoList, todo => {
 
-					return <div key = {todo.id}>
+				<div>
 
-						<ul className="list-group list-group-flush">
-							<li className={`list-group-item bg-${this.itemNumber % 2 === 0 ? 'light' : ''}`}>
-
-								<div className="font-wei	ght-bold d-inline">
-									{this.itemNumber=this.itemNumber+1}. {todo.title}
-								</div>
-								<div className="d-inline float-right">
-									<i className={`fa fa-${!todo.completed 
-									? 'flag text-danger blink' 
-									: 'check-square text-primary'}`}></i>
-								</div>
-								<div className="ml-4">Todo-ID: {todo.id} </div>
-								<div className="text-right">User ID: {todo.userId}</div>
+					<ul className="list-group list-group-flush">
+						{_.map(newTodoList, todo => {
+							
+							return <li key={todo.id}  
+								 className={`list-group-item bg-${this.itemNumber % 2 === 0 ? 'light' : ''}`}>
 								
-							</li>
-						</ul>
-					
-					</div>
-					
-				})}
-			
+								<div onClick={ () => {
+									console.log('a: ', todo.id); 
+									this.setState({ 
+
+										postedTodo: todo,
+										openModal: true
+
+									});
+									this.itemNumber = 0;
+								}}
+									
+								>
+									<div className="font-weight-bold d-inline">
+										{this.itemNumber=this.itemNumber+1}. {todo.title}
+									</div>
+									<div className="d-inline float-right">
+										<i className={`fa fa-${!todo.completed 
+										? 'flag text-danger blink' 
+										: 'check-square text-primary'}`}></i>
+									</div>
+									<div className="ml-4">Todo-ID: {todo.id} </div>
+									<div className="text-right">User ID: {todo.userId}</div>
+								</div>
+							</li>;
+						})}
+					</ul>
+				<div>
+
+					<PostedTodo 
+
+						modalControl= {{
+
+							postedTodo: this.state.postedTodo,
+							openModal: this.state.openModal,
+							closeModal: () => {
+								this.setState({ openModal: false });
+								this.itemNumber = 0;
+							}
+
+						}}
+					/>
+
+				</div>	
+
+				</div>
 			</div>
 		</div>);
 	}
