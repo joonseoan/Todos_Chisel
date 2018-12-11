@@ -17,7 +17,9 @@
 ##### command) npm install --save axios lodash react-bootstrap react-redux redux redux-thunk
 ### 11. Copy delete 'src' folder in your PC and copy 'src' folder in this GitHub and paste it into your PC
 ### 12. Run command (command) 'npm start' / 'npm run start' to start!
-
+## APP Design
+### ![Main Page1](./todos.PNG)
+# Again, a user must copy this 'index.html' code to use Bootstrap
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -86,6 +88,3 @@
     ></script>
   </body>
 </html>
-
-## APP Design
-### ![Main Page1](./todos.PNG)
