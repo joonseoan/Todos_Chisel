@@ -78,7 +78,7 @@ class TodoList extends Component {
 
 		// Filter unique userIds to build pagination buttons 
 		// 	which are based on userIds
-		const userIds = _.uniqBy(_.map(ascendingTodos, todo => todo.userId));
+		const userIds = _.uniqBy(_.sortBy(_.map(ascendingTodos, todo => todo.userId)));
 
 		const controlData = {
 
